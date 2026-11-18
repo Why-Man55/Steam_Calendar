@@ -44,4 +44,18 @@ public class MainDao {
             return null;
         }
     }
+
+    public int saveFriends(String userId, String[] friends_id) {
+        String sql = "insert into friendships (account_id, friend_id) values (?, ?)";
+        try (Connection con = DatabaseManager.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            for (String i : friends_id) {
+                st.setString(1, userId);
+                st.setString(2, i);
+            }
+            return 0;
+        } catch (SQLException e) {
+            return -1;
+        }
+    }
 }

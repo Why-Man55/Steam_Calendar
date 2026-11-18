@@ -8,10 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class MainServlet extends HttpServlet {
-    MainService service = new MainService();
+    MainService service;
+
+    @Override
+    public void init() {
+        this.service = (MainService) getServletContext().getAttribute("mainService");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.set
+        req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req,resp);
     }
 
     @Override
@@ -19,9 +25,12 @@ public class MainServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        switch(service.checkAuth(username, password)){
-            case -1:
-
+        int status = service.checkAuth(username, password);
+        switch(status){
+            case -1 -> req.setAttribute("authRes", "");
+            case -2 -> req.setAttribute("authRes", "");
+            case 0 -> req.setAttribute("authRes", "");
         }
+        req.getRequestDispatcher(req.getContextPath()).forward(req,resp);
     }
 }
