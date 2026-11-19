@@ -13,9 +13,9 @@ public class Dao {
         try (Connection con = DatabaseManager.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
-            st.setString(1, model.id);
-            st.setString(1, model.name);
-            st.setString(3, model.passwordHash);
+            st.setString(1, model.getId());
+            st.setString(1, model.getUsername());
+            st.setString(3, model.getPasswordHash());
             return 0;
         } catch (SQLException e) {
             return -1;
