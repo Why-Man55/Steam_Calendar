@@ -21,4 +21,31 @@ public class Dao {
             return -1;
         }
     }
+
+    public boolean isExists(String id) {
+        String sql = "Select id from account where id = (?)";
+
+        try( Connection con = DatabaseManager.getConnection();
+        PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, id);
+            st.executeQuery();
+
+            return st.getResultSet().wasNull();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public String getHash(String id) {
+        String sql = "Select password_hash from account where id = (?)";
+
+        try(Connection con = DatabaseManager.getConnection();
+        PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, id);
+
+            return String.valueOf(st.getResultSet().next());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

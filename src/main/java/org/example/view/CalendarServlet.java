@@ -1,4 +1,7 @@
 package org.example.view;
 
-public class CalendarServlet {
+import jakarta.servlet.http.HttpServlet;
+
+public class CalendarServlet extends HttpServlet {
+
 }
