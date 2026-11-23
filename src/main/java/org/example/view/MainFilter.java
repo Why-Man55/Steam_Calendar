@@ -13,16 +13,16 @@ public class MainFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
+        String path = req.getServletPath();
+        boolean isPublicPath = path.equals("/login")
+                || path.equals("/register")
+                || path.startsWith("/");
+
         HttpSession session = req.getSession(false);
 
         if (session == null) {
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
         }
-
-        String path = req.getServletPath();
-        boolean isPublicPath = path.equals("/login")
-                || path.equals("/register")
-                || path.startsWith("/");
 
         boolean isLoggedIn = (session != null && session.getAttribute("userId") != null);
 

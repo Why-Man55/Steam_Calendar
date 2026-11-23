@@ -2,7 +2,7 @@ package org.example.domain;
 
 import org.example.dao.Dao;
 import org.example.domain.models.AccountModel;
-import org.example.domain.models.UtilsService;
+import org.example.domain.utils.Utils;
 
 public class AuthService {
     Dao dao;
@@ -15,7 +15,7 @@ public class AuthService {
     }
 
     public boolean register(String id, String username, String password) {
-        String hash = UtilsService.makeHash(password);
+        String hash = Utils.makeHash(password);
 
         dao.saveAccount(new AccountModel(id, username, hash));
         return false;
@@ -23,7 +23,7 @@ public class AuthService {
 
     public boolean checkLogin(String id, String password) {
         if (dao.isExists(id)) {
-            String hash = UtilsService.makeHash(password);
+            String hash = Utils.makeHash(password);
             String checkHash = dao.getHash(id);
 
             return checkHash.equals(hash);

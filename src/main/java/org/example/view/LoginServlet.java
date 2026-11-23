@@ -5,9 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.domain.AccountInfoService;
+import jakarta.servlet.http.HttpSession;
 import org.example.domain.AuthService;
-import org.example.view.models.UtilsServlet;
+import org.example.view.utils.UtilsForSteam;
 
 import java.io.IOException;
 
@@ -31,9 +31,11 @@ public class LoginServlet extends HttpServlet {
         String id = req.getParameter("userId");
         String password = req.getParameter("password");
 
-        if (UtilsServlet.isCorrectId(id)) {
+        if (UtilsForSteam.isCorrectId(id)) {
             if (service.checkLogin(id, password)) {
-
+                HttpSession session = req.getSession();
+                session.setAttribute("userId", id);
+                resp.sendRedirect("/WEB-INF/views/accountInfo.jsp");
             }
         }
     }

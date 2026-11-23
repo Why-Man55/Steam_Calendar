@@ -1,15 +1,11 @@
 package org.example.domain;
 
-import com.google.common.hash.Hashing;
 import org.example.dao.Dao;
-import org.example.domain.models.AccountModel;
-import org.example.domain.models.UtilsService;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +15,31 @@ public class AccountInfoService {
     public AccountInfoService(Dao dao) {
         this.dao = dao;
     }
+    private final SteamApiClient steamApiClient;
 
+    public AccountInfoService(Dao dao, SteamApiClient steamApiClient) {
+        this.dao = dao;
+        this.steamApiClient = steamApiClient;
+    }
+
+    public SteamProfileDto getPublicProfile(String steamId) {
+        if (steamId == null || steamId.isBlank()) {
+            return null;
+        }
+
+        // Получаем базовую информацию из Steam API
+        SteamProfileDto profile = steamApiClient.fetchPlayerSummary(steamId.trim());
+
+        if (profile == null) {
+            return null;
+        }
+
+        // При необходимости можно дополнить объект данными из вашей БД
+        // например: boolean isRegistered = dao.existsBySteamId(steamId);
+        // profile.setRegisteredInApp(isRegistered);
+
+        return profile;
+    }
     private static String getSteamId(String input) throws Exception {
         // Проверяем, состоит ли ввод только из 17 цифр (стандартный SteamID64)
         if (input.matches("^\\d{17}$")) {

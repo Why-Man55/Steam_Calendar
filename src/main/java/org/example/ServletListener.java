@@ -11,6 +11,9 @@ import org.example.domain.FriendsService;
 public class ServletListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
+        String steamApiKey = System.getenv("STEAM_API_KEY");
+
         Dao dao = new Dao();
         AuthService authService = new AuthService(dao);
         AccountInfoService accountInfoService = new AccountInfoService(dao);
