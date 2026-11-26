@@ -35,7 +35,10 @@ public class LoginServlet extends HttpServlet {
             if (service.checkLogin(id, password)) {
                 HttpSession session = req.getSession();
                 session.setAttribute("userId", id);
-                resp.sendRedirect("/WEB-INF/views/accountInfo.jsp");
+                resp.sendRedirect(req.getContextPath() + "/account");
+            } else {
+                req.setAttribute("loginError", "not found");
+                req.getRequestDispatcher("WEB-INF/views/login.jsp");
             }
         }
     }

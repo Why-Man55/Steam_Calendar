@@ -4,6 +4,7 @@ import org.example.domain.models.AccountModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Dao {
@@ -14,10 +15,11 @@ public class Dao {
              PreparedStatement st = con.prepareStatement(sql)) {
 
             st.setString(1, model.getId());
-            st.setString(1, model.getUsername());
+            st.setString(2, model.getUsername());
             st.setString(3, model.getPasswordHash());
-            return 0;
+            return st.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
     }
@@ -28,9 +30,10 @@ public class Dao {
         try( Connection con = DatabaseManager.getConnection();
         PreparedStatement st = con.prepareStatement(sql)) {
             st.setString(1, id);
-            st.executeQuery();
+            try(ResultSet rs = st.executeQuery()) {
+                return rs.next();
+            }
 
-            return st.getResultSet().wasNull();
         } catch (SQLException e) {
             return false;
         }
@@ -39,13 +42,17 @@ public class Dao {
     public String getHash(String id) {
         String sql = "Select password_hash from account where id = (?)";
 
-        try(Connection con = DatabaseManager.getConnection();
-        PreparedStatement st = con.prepareStatement(sql)) {
+        try (Connection con = DatabaseManager.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
             st.setString(1, id);
-
-            return String.valueOf(st.getResultSet().next());
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("password_hash");
+                }
+                return null;
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

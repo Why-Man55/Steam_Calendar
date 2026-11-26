@@ -1,10 +1,10 @@
-package org.example.domain;
+package org.example.data;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.example.view.models.SteamProfileDto;
+import org.example.domain.models.SteamProfileDto;
 
 import java.net.ProxySelector;
 import java.net.URI;
@@ -86,6 +86,17 @@ public class SteamApiClient {
 
         JsonObject player = players.get(0).getAsJsonObject();
 
+        int personaState = getIntOrDefault(player, "personastate", 0);
+        String statusText = switch (personaState) {
+            case 1 -> "В сети";
+            case 2 -> "Не беспокоить";
+            case 3 -> "Нет на месте";
+            case 4 -> "Спит";
+            case 5 -> "Ищет обмен";
+            case 6 -> "Хочет играть";
+            default -> "Не в сети";
+        };
+
         return SteamProfileDto.builder()
                 .steamId(getStringOrNull(player, "steamid"))
                 .personaName(getStringOrNull(player, "personaname"))
@@ -96,6 +107,7 @@ public class SteamApiClient {
                 .communityVisibilityState(getIntOrDefault(player, "communityvisibilitystate", 1))
                 .timeCreated(getLongOrDefault(player, "timecreated", 0L))
                 .friendIds(friendIds)
+                .statusText(statusText)
                 .build();
     }
 

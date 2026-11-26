@@ -1,4 +1,4 @@
-package org.example.view.models;
+package org.example.domain.models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +17,7 @@ public class SteamProfileDto {
     private int communityVisibilityState;
     private long timeCreated;
     private List<String> friendIds;
+    private String statusText;
 
     public boolean isPublic() {
         return communityVisibilityState == 3;

@@ -1,8 +1,9 @@
 package org.example.domain;
 
 import org.example.dao.Dao;
+import org.example.data.SteamApiClient;
 import org.example.domain.models.SteamSearchResult;
-import org.example.view.models.SteamProfileDto;
+import org.example.domain.models.SteamProfileDto;
 import org.example.view.utils.UtilsForSteam;
 
 import java.util.List;

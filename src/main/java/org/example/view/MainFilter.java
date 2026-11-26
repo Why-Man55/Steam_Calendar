@@ -16,8 +16,9 @@ public class MainFilter implements Filter {
         String path = req.getServletPath();
         boolean isPublicPath = path.equals("/login")
                 || path.equals("/register")
-                || path.isEmpty()
-                || path.equals("/");
+                || path.equals("/")
+                || path.equals("/logout")
+                || path.isEmpty();
 
         HttpSession session = req.getSession(false);
         boolean isLoggedIn = (session != null && session.getAttribute("userId") != null);
@@ -25,7 +26,7 @@ public class MainFilter implements Filter {
         if (isLoggedIn || isPublicPath) {
             chain.doFilter(request, response);
         } else {
-            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
     }
 }

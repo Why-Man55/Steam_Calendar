@@ -8,11 +8,23 @@
 </head>
 <body>
 
-    <div>
-        <a href="<c:url value='/login'/>">
-            <button type="button">Login</button>
-        </a>
-    </div>
+     <div>
+            <c:choose>
+                <c:when test="${not empty sessionScope.userId}">
+                    <a href="<c:url value='/account'/>">
+                        <button type="button">Мой профиль</button>
+                    </a>
+                    <form method="post" action="<c:url value='/logout'/>" style="display:inline;">
+                        <button type="submit">Выйти</button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <a href="<c:url value='/login'/>">
+                        <button type="button">Login</button>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
     <hr>
 
@@ -20,7 +32,7 @@
         <p><strong><c:out value="${error}"/></strong></p>
     </c:if>
 
-    <form method="post" action="<c:url value='/'/>">
+    <form method="get" action="<c:url value='/'/>">
         <label for="steamId">Ссылка на аккаунт, SteamID или ник:</label><br>
         <input type="text"
                id="steamId"
@@ -41,7 +53,6 @@
         <ul>
             <li><strong>Никнейм:</strong> <c:out value="${steamProfile.personaName}"/></li>
             <li><strong>SteamID64:</strong> <c:out value="${steamProfile.steamId}"/></li>
-            <li><strong>Статус:</strong> <c:out value="${steamProfile.statusText}"/></li>
             <li><strong>Профиль:</strong> <a href="<c:out value='${steamProfile.profileUrl}'/>" target="_blank"><c:out value="${steamProfile.profileUrl}"/></a></li>
 
             <c:if test="${not empty steamProfile.realName}">
@@ -53,7 +64,13 @@
             </c:if>
 
             <li><strong>Видимость профиля:</strong> ${steamProfile.communityVisibilityState == 3 ? 'Публичный' : 'Приватный'}</li>
-            <li><strong>Количество друзей:</strong> ${steamProfile.friendIds.size()}</li>
+            <li>
+                <strong>Количество друзей:</strong>
+                <c:choose>
+                    <c:when test="${steamProfile.friendIds == null}">Скрыто настройками приватности</c:when>
+                    <c:otherwise>${steamProfile.friendIds.size()}</c:otherwise>
+                </c:choose>
+            </li>
         </ul>
 
         <c:if test="${not empty steamProfile.friendIds}">

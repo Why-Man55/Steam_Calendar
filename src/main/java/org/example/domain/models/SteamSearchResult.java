@@ -2,8 +2,6 @@ package org.example.domain.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.domain.AccountInfoService;
-import org.example.view.models.SteamProfileDto;
 
 @Getter
 @AllArgsConstructor

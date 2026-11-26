@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<web-app xmlns="https://jakarta.ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         xsi:schemaLocation="https://jakarta.ee https://jakarta.ee/web-app_6_0.xsd"
          version="6.0">
 
     <filter>
@@ -24,6 +24,10 @@
         <servlet-name>mainSearchServlet</servlet-name>
         <servlet-class>org.example.view.MainSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>org.example.view.LogoutServlet</servlet-class>
+    </servlet>
 
     <filter-mapping>
         <filter-name>mainFilter</filter-name>
@@ -44,5 +48,9 @@
     <servlet-mapping>
         <servlet-name>mainSearchServlet</servlet-name>
         <url-pattern></url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 </web-app>

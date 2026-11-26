@@ -16,9 +16,7 @@ public class AuthService {
 
     public boolean register(String id, String username, String password) {
         String hash = Utils.makeHash(password);
-
-        dao.saveAccount(new AccountModel(id, username, hash));
-        return false;
+        return dao.saveAccount(new AccountModel(id, username, hash)) == 1;
     }
 
     public boolean checkLogin(String id, String password) {
