@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.domain.AuthService;
 import org.example.domain.models.RegisterCodes;
-import org.example.view.utils.UtilsForSteam;
+import org.example.view.utils.ViewUtilsForSteam;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("userId");
-        if (!UtilsForSteam.isCorrectId(id)) {
+        if (!ViewUtilsForSteam.isCorrectId(id)) {
             req.setAttribute("registerStatus", RegisterCodes.WRONG_ID);
 
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);

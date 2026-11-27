@@ -3,7 +3,7 @@ package org.example;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import org.example.dao.Dao;
+import org.example.dao.AccountDao;
 import org.example.data.SteamApiClient;
 import org.example.domain.*;
 
@@ -14,11 +14,11 @@ public class ServletListener implements ServletContextListener {
 
         String steamApiKey = System.getenv("STEAM_API_KEY");
 
-        Dao dao = new Dao();
+        AccountDao accountDao = new AccountDao();
         SteamApiClient steamApiClient = new SteamApiClient(steamApiKey);
 
-        AuthService authService = new AuthService(dao);
-        AccountInfoService accountInfoService = new AccountInfoService(dao, steamApiClient);
+        AuthService authService = new AuthService(accountDao);
+        AccountInfoService accountInfoService = new AccountInfoService(accountDao, steamApiClient);
         CalendarService calendarService = new CalendarService();
         FriendsService friendsService = new FriendsService();
 

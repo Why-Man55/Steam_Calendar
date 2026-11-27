@@ -1,13 +1,12 @@
 package org.example.dao;
 
-import org.example.domain.models.AccountModel;
-
+import org.example.dao.models.AccountModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Dao {
+public class AccountDao {
     public int saveAccount(AccountModel model){
         String sql = "Insert into account (id, username, password_hash) values (?, ?, ?)";
 

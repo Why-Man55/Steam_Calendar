@@ -1,20 +1,20 @@
 package org.example.domain;
 
-import org.example.dao.Dao;
+import org.example.dao.AccountDao;
 import org.example.data.SteamApiClient;
-import org.example.domain.models.SteamSearchResult;
 import org.example.domain.models.SteamProfileDto;
-import org.example.view.utils.UtilsForSteam;
+import org.example.domain.models.SteamSearchResult;
+import org.example.domain.utils.DomainUtilsForSteam;
 
 import java.util.List;
 
 public class AccountInfoService {
 
-    private final Dao dao;
+    private final AccountDao accountDao;
     private final SteamApiClient steamApiClient;
 
-    public AccountInfoService(Dao dao, SteamApiClient steamApiClient) {
-        this.dao = dao;
+    public AccountInfoService(AccountDao accountDao, SteamApiClient steamApiClient) {
+        this.accountDao = accountDao;
         this.steamApiClient = steamApiClient;
     }
 
@@ -23,7 +23,7 @@ public class AccountInfoService {
             return SteamSearchResult.failure("Не задан STEAM_API_KEY в переменных окружения сервера");
         }
 
-        UtilsForSteam.ParsedInput parsed = UtilsForSteam.parse(query);
+        DomainUtilsForSteam.ParsedInput parsed = DomainUtilsForSteam.parse(query);
         if (parsed == null) {
             return SteamSearchResult.failure("ID не найден");
         }

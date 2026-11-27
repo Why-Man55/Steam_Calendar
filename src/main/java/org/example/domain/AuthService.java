@@ -1,28 +1,28 @@
 package org.example.domain;
 
-import org.example.dao.Dao;
-import org.example.domain.models.AccountModel;
-import org.example.domain.utils.Utils;
+import org.example.dao.AccountDao;
+import org.example.dao.models.AccountModel;
+import org.example.domain.utils.DomainUtilsForSteam;
 
 public class AuthService {
-    Dao dao;
-    public AuthService(Dao dao) {
-        this.dao = dao;
+    AccountDao accountDao;
+    public AuthService(AccountDao accountDao) {
+        this.accountDao = accountDao;
     }
 
     public boolean isRegistered(String id) {
-        return dao.isExists(id);
+        return accountDao.isExists(id);
     }
 
     public boolean register(String id, String username, String password) {
-        String hash = Utils.makeHash(password);
-        return dao.saveAccount(new AccountModel(id, username, hash)) == 1;
+        String hash = DomainUtilsForSteam.makeHash(password);
+        return accountDao.saveAccount(new AccountModel(id, username, hash)) == 1;
     }
 
     public boolean checkLogin(String id, String password) {
-        if (dao.isExists(id)) {
-            String hash = Utils.makeHash(password);
-            String checkHash = dao.getHash(id);
+        if (accountDao.isExists(id)) {
+            String hash = DomainUtilsForSteam.makeHash(password);
+            String checkHash = accountDao.getHash(id);
 
             return checkHash.equals(hash);
         } else {

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.domain.AuthService;
-import org.example.view.utils.UtilsForSteam;
+import org.example.view.utils.ViewUtilsForSteam;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
         String id = req.getParameter("userId");
         String password = req.getParameter("password");
 
-        if (UtilsForSteam.isCorrectId(id)) {
+        if (ViewUtilsForSteam.isCorrectId(id)) {
             if (service.checkLogin(id, password)) {
                 HttpSession session = req.getSession();
                 session.setAttribute("userId", id);
