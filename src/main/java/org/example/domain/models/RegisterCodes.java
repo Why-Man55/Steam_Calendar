@@ -1,8 +1,10 @@
 package org.example.domain.models;
 
 public enum RegisterCodes {
-    WRONG_ID,
-    EXISTS,
     SUCCESS,
+    WRONG_ID,
+    STEAM_NOT_FOUND,
+    WEAK_PASSWORD,
+    EXISTS,
     SERVER_ERROR
 }

@@ -40,5 +40,40 @@
             <li><strong>Профиль Steam:</strong> <a href="<c:out value='${steamProfile.profileUrl}'/>" target="_blank">Открыть</a></li>
         </ul>
     </c:if>
+
+    <hr>
+        <h3>Друзья из Steam в Steam Calendar</h3>
+
+        <c:choose>
+            <c:when test="${empty registeredFriends}">
+                <p>Пока никто из ваших друзей в Steam не зарегистрировался в приложении (или список друзей скрыт настройками приватности).</p>
+            </c:when>
+            <c:otherwise>
+                <form method="post" action="<c:url value='/account'/>">
+                    <p>Отметьте друзей, чтобы видеть пересечения свободного времени в календаре:</p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <c:forEach var="friend" items="${registeredFriends}">
+                            <li style="margin-bottom: 8px;">
+                                <label>
+                                    <input type="checkbox"
+                                           name="friendIds"
+                                           value="<c:out value='${friend.steamId}'/>"
+                                           <c:if test="${friend.alreadyAdded}">checked disabled</c:if> />
+                                    <c:if test="${not empty friend.avatarUrl}">
+                                        <img src="<c:out value='${friend.avatarUrl}'/>" alt="Avatar" width="24" height="24" style="vertical-align: middle;">
+                                    </c:if>
+                                    <strong><c:out value="${friend.personaName}"/></strong>
+                                    (<c:out value="${friend.steamId}"/>)
+                                    <c:if test="${friend.alreadyAdded}">
+                                        <span>— <em>уже в друзьях</em></span>
+                                    </c:if>
+                                </label>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                    <button type="submit">Сохранить выбранных друзей</button>
+                </form>
+            </c:otherwise>
+        </c:choose>
 </body>
 </html>

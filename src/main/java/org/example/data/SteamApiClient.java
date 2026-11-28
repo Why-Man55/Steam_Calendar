@@ -190,4 +190,61 @@ public class SteamApiClient {
             return null;
         }
     }
+
+    public List<SteamProfileDto> fetchPlayerSummaries(List<String> steamIds) {
+        if (steamIds == null || steamIds.isEmpty()) {
+            return List.of();
+        }
+
+        String joinedIds = String.join(",", steamIds);
+        String url = String.format("%s/ISteamUser/GetPlayerSummaries/v2/?key=%s&steamids=%s",
+                BASE_URL, apiKey, joinedIds);
+
+        String body = sendGet(url);
+        if (body == null) {
+            return List.of();
+        }
+
+        JsonObject root = parseJsonObject(body);
+        if (root == null || !root.has("response")) {
+            return List.of();
+        }
+
+        JsonArray players = root.getAsJsonObject("response").getAsJsonArray("players");
+        if (players == null || players.isEmpty()) {
+            return List.of();
+        }
+
+        List<SteamProfileDto> result = new ArrayList<>();
+        for (JsonElement element : players) {
+            result.add(mapPlayerJson(element.getAsJsonObject(), null));
+        }
+        return result;
+    }
+
+    private SteamProfileDto mapPlayerJson(JsonObject player, List<String> friendIds) {
+        int personaState = getIntOrDefault(player, "personastate", 0);
+        String statusText = switch (personaState) {
+            case 1 -> "В сети";
+            case 2 -> "Не беспокоить";
+            case 3 -> "Нет на месте";
+            case 4 -> "Спит";
+            case 5 -> "Ищет обмен";
+            case 6 -> "Хочет играть";
+            default -> "Не в сети";
+        };
+
+        return SteamProfileDto.builder()
+                .steamId(getStringOrNull(player, "steamid"))
+                .personaName(getStringOrNull(player, "personaname"))
+                .avatarFullUrl(getStringOrNull(player, "avatarfull"))
+                .profileUrl(getStringOrNull(player, "profileurl"))
+                .realName(getStringOrNull(player, "realname"))
+                .countryCode(getStringOrNull(player, "loccountrycode"))
+                .communityVisibilityState(getIntOrDefault(player, "communityvisibilitystate", 1))
+                .timeCreated(getLongOrDefault(player, "timecreated", 0L))
+                .friendIds(friendIds)
+                .statusText(statusText)
+                .build();
+    }
 }

@@ -12,12 +12,11 @@ import org.example.view.utils.ViewUtilsForSteam;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
-    AuthService service;
+    private AuthService service;
 
     @Override
     public void init() throws ServletException {
         ServletContext context = getServletContext();
-
         this.service = (AuthService) context.getAttribute("authService");
     }
 
@@ -31,15 +30,19 @@ public class LoginServlet extends HttpServlet {
         String id = req.getParameter("userId");
         String password = req.getParameter("password");
 
-        if (ViewUtilsForSteam.isCorrectId(id)) {
-            if (service.checkLogin(id, password)) {
-                HttpSession session = req.getSession();
-                session.setAttribute("userId", id);
-                resp.sendRedirect(req.getContextPath() + "/account");
-            } else {
-                req.setAttribute("loginError", "not found");
-                req.getRequestDispatcher("WEB-INF/views/login.jsp");
-            }
+        if (!ViewUtilsForSteam.isCorrectId(id)) {
+            req.setAttribute("loginError", "Некорректный формат SteamID64.");
+            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+            return;
+        }
+
+        if (service.checkLogin(id, password)) {
+            HttpSession session = req.getSession();
+            session.setAttribute("userId", id);
+            resp.sendRedirect(req.getContextPath() + "/account");
+        } else {
+            req.setAttribute("loginError", "Неверный SteamID или пароль.");
+            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
         }
     }
 }

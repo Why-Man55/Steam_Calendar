@@ -28,6 +28,10 @@
         <servlet-name>logoutServlet</servlet-name>
         <servlet-class>org.example.view.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>calendarServlet</servlet-name>
+        <servlet-class>org.example.view.CalendarServlet</servlet-class>
+    </servlet>
 
     <filter-mapping>
         <filter-name>mainFilter</filter-name>
@@ -47,10 +51,14 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>mainSearchServlet</servlet-name>
-        <url-pattern></url-pattern>
+        <url-pattern/>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>calendarServlet</servlet-name>
+        <url-pattern>/calendar</url-pattern>
     </servlet-mapping>
 </web-app>
