@@ -18,6 +18,7 @@ public class MainFilter implements Filter {
                 || path.equals("/register")
                 || path.equals("/")
                 || path.equals("/logout")
+                || path.startsWith("/js/")
                 || path.isEmpty();
 
         HttpSession session = req.getSession(false);

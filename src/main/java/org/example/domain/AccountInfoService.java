@@ -4,7 +4,7 @@ import org.example.dao.AccountDao;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.SteamProfileDto;
 import org.example.domain.models.SteamSearchResult;
-import org.example.domain.utils.DomainUtilsForSteam;
+import org.example.domain.utils.SteamUtils;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class AccountInfoService {
             return SteamSearchResult.failure("Не задан STEAM_API_KEY в переменных окружения сервера");
         }
 
-        DomainUtilsForSteam.ParsedInput parsed = DomainUtilsForSteam.parse(query);
+        SteamUtils.ParsedInput parsed = SteamUtils.parse(query);
         if (parsed == null) {
             return SteamSearchResult.failure("ID не найден");
         }

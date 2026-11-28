@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.domain.AuthService;
-import org.example.view.utils.ViewUtilsForSteam;
+import org.example.view.utils.SteamMapper;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         String id = req.getParameter("userId");
         String password = req.getParameter("password");
 
-        if (!ViewUtilsForSteam.isCorrectId(id)) {
+        if (!SteamMapper.isCorrectId(id)) {
             req.setAttribute("loginError", "Некорректный формат SteamID64.");
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
             return;

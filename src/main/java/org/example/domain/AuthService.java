@@ -5,7 +5,7 @@ import org.example.dao.models.AccountModel;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.RegisterCodes;
 import org.example.domain.models.SteamProfileDto;
-import org.example.domain.utils.DomainUtilsForSteam;
+import org.example.domain.utils.SteamUtils;
 
 public class AuthService {
     private static final int MIN_PASSWORD_LENGTH = 8;
@@ -36,7 +36,7 @@ public class AuthService {
                 ? profile.getPersonaName()
                 : username.trim();
 
-        String hash = DomainUtilsForSteam.makeHash(password);
+        String hash = SteamUtils.makeHash(password);
         boolean saved = accountDao.saveAccount(new AccountModel(id, finalUsername, hash)) == 1;
 
         return saved ? RegisterCodes.SUCCESS : RegisterCodes.SERVER_ERROR;
@@ -46,7 +46,7 @@ public class AuthService {
         if (id == null || password == null || !accountDao.isExists(id)) {
             return false;
         }
-        String hash = DomainUtilsForSteam.makeHash(password);
+        String hash = SteamUtils.makeHash(password);
         String checkHash = accountDao.getHash(id);
         return checkHash != null && checkHash.equals(hash);
     }
