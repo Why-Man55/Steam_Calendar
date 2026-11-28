@@ -1,4 +1,6 @@
-package org.example.dao;
+package org.example.data.persistence;
+
+import org.example.DatabaseManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendshipDao {
+public class ImplFriendshipRepository {
     public void saveFriends(String accountId, List<String> registeredFriendIds) {
         if (registeredFriendIds == null || registeredFriendIds.isEmpty()) {
             return;

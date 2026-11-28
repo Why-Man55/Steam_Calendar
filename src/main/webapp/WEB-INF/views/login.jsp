@@ -11,7 +11,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход — Steam Calendar</title>
+    <title>Вход</title>
 </head>
 <body>
     <div>
@@ -22,21 +22,17 @@
 
     <h2>Вход в аккаунт</h2>
 
-    <c:if test="${param.registered == 'true'}">
-        <p style="color: green;"><strong>Регистрация прошла успешно! Теперь вы можете войти.</strong></p>
-    </c:if>
-
     <c:if test="${not empty loginError}">
         <p style="color: red;"><strong><c:out value="${loginError}"/></strong></p>
     </c:if>
 
     <form method="post" action="<c:url value='/login'/>">
-        <div style="margin-bottom: 10px;">
+        <div>
             <label>SteamID64:<br>
                 <input type="text" name="userId" placeholder="7656119..." required>
             </label>
         </div>
-        <div style="margin-bottom: 10px;">
+        <div>
             <label>Пароль:<br>
                 <input type="password" name="password" required>
             </label>

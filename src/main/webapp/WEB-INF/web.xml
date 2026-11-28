@@ -6,31 +6,31 @@
 
     <filter>
         <filter-name>mainFilter</filter-name>
-        <filter-class>org.example.view.MainFilter</filter-class>
+        <filter-class>org.example.view.filter.MainFilter</filter-class>
     </filter>
     <servlet>
         <servlet-name>registerServlet</servlet-name>
-        <servlet-class>org.example.view.RegisterServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>loginServlet</servlet-name>
-        <servlet-class>org.example.view.LoginServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>accountInfoServlet</servlet-name>
-        <servlet-class>org.example.view.AccountInfoServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.AccountInfoServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>mainSearchServlet</servlet-name>
-        <servlet-class>org.example.view.MainSearchServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.MainSearchServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>logoutServlet</servlet-name>
-        <servlet-class>org.example.view.LogoutServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>calendarServlet</servlet-name>
-        <servlet-class>org.example.view.CalendarServlet</servlet-class>
+        <servlet-class>org.example.view.servlet.CalendarServlet</servlet-class>
     </servlet>
 
     <filter-mapping>

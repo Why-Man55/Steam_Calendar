@@ -26,37 +26,37 @@
         <p style="color: red;"><strong>
             <c:choose>
                 <c:when test="${registerStatus == 'WRONG_ID'}">
-                    Некорректный SteamID64: он должен состоять ровно из 17 цифр.
+                    Некорректный SteamID64
                 </c:when>
                 <c:when test="${registerStatus == 'STEAM_NOT_FOUND'}">
-                    Профиль с таким SteamID64 не найден в базе Steam. Проверьте правильность ID.
+                    Профиль не найден.
                 </c:when>
                 <c:when test="${registerStatus == 'WEAK_PASSWORD'}">
-                    Пароль слишком короткий: введите минимум 8 символов.
+                    Пароль введите минимум 8 символов.
                 </c:when>
                 <c:when test="${registerStatus == 'EXISTS'}">
-                    Аккаунт с таким SteamID64 уже зарегистрирован.
+                    Аккаунт уже зарегистрирован.
                 </c:when>
                 <c:otherwise>
-                    Ошибка сервера при сохранении аккаунта. Попробуйте позже.
+                    Ошибка сервера при сохранении аккаунта.
                 </c:otherwise>
             </c:choose>
         </strong></p>
     </c:if>
 
     <form method="post" action="<c:url value='/register'/>">
-        <div style="margin-bottom: 10px;">
+        <div>
             <label>SteamID64:<br>
                 <input type="text" name="userId" pattern="\d{17}" title="Введите 17 цифр вашего SteamID64" placeholder="7656119..." required>
             </label>
         </div>
-        <div style="margin-bottom: 10px;">
-            <label>Имя пользователя (если оставить пустым — возьмем из Steam):<br>
+        <div>
+            <label>Имя пользователя (опционально):<br>
                 <input type="text" name="username" maxlength="50">
             </label>
         </div>
-        <div style="margin-bottom: 10px;">
-            <label>Пароль (минимум 8 символов):<br>
+        <div>
+            <label>Пароль (минимум 8 символов)<br>
                 <input type="password" name="password" minlength="8" required>
             </label>
         </div>

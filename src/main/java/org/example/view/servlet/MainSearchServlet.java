@@ -1,11 +1,11 @@
-package org.example.view;
+package org.example.view.servlet;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.domain.AccountInfoService;
+import org.example.domain.service.AccountInfoService;
 import org.example.domain.models.SteamSearchResult;
 
 import java.io.IOException;

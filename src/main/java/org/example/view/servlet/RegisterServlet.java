@@ -1,17 +1,17 @@
-package org.example.view;
+package org.example.view.servlet;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.example.domain.AuthService;
+import org.example.domain.service.AuthService;
+import org.example.domain.models.RegisterCodes;
 import org.example.view.utils.SteamMapper;
 
 import java.io.IOException;
 
-public class LoginServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
     private AuthService service;
 
     @Override
@@ -22,27 +22,28 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("userId");
+        String username = req.getParameter("username");
         String password = req.getParameter("password");
 
         if (!SteamMapper.isCorrectId(id)) {
-            req.setAttribute("loginError", "Некорректный формат SteamID64.");
-            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+            req.setAttribute("registerStatus", RegisterCodes.WRONG_ID);
+            req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
             return;
         }
 
-        if (service.checkLogin(id, password)) {
-            HttpSession session = req.getSession();
-            session.setAttribute("userId", id);
+        RegisterCodes status = service.register(id.trim(), username, password);
+        if (status == RegisterCodes.SUCCESS) {
+            req.getSession().setAttribute("userId", id.trim());
             resp.sendRedirect(req.getContextPath() + "/account");
         } else {
-            req.setAttribute("loginError", "Неверный SteamID или пароль.");
-            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+            req.setAttribute("registerStatus", status);
+            req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
         }
     }
 }

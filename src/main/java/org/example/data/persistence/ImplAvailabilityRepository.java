@@ -1,6 +1,7 @@
-package org.example.dao;
+package org.example.data.persistence;
 
-import org.example.dao.models.TimeSlot;
+import org.example.DatabaseManager;
+import org.example.domain.models.TimeSlot;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailabilityDao {
+public class ImplAvailabilityRepository {
     public boolean addAvailability(String accountId, OffsetDateTime start, OffsetDateTime end) {
         String sql = "INSERT INTO account_availability (account_id, available_time) VALUES (?, tstzrange(?, ?, '[)'))";
 

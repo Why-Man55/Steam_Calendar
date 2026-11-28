@@ -1,20 +1,18 @@
-package org.example.domain;
+package org.example.domain.service;
 
-import org.example.dao.AvailabilityDao;
-import org.example.dao.models.TimeSlot;
+import org.example.data.persistence.ImplAvailabilityRepository;
+import org.example.domain.models.TimeSlot;
 import org.example.domain.models.CalendarCodes;
 import org.example.domain.models.TimeSlotDto;
 
 import java.time.*;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CalendarService {
-    private final AvailabilityDao availabilityDao;
+    private final ImplAvailabilityRepository implAvailabilityRepository;
 
-    public CalendarService(AvailabilityDao availabilityDao) {
-        this.availabilityDao = availabilityDao;
+    public CalendarService(ImplAvailabilityRepository implAvailabilityRepository) {
+        this.implAvailabilityRepository = implAvailabilityRepository;
     }
 
     public CalendarCodes addSlot(String accountId, String startStr, String endStr, String zoneIdStr) {
@@ -34,7 +32,7 @@ public class CalendarService {
                 return CalendarCodes.INVALID_TIME_RANGE;
             }
 
-            boolean saved = availabilityDao.addAvailability(accountId, start, end);
+            boolean saved = implAvailabilityRepository.addAvailability(accountId, start, end);
             return saved ? CalendarCodes.SUCCESS : CalendarCodes.DB_ERROR;
 
         } catch (DateTimeException e) {
@@ -43,19 +41,19 @@ public class CalendarService {
     }
 
     public List<TimeSlotDto> getUserSlots(String accountId) {
-        return availabilityDao.getUserAvailability(accountId).stream()
+        return implAvailabilityRepository.getUserAvailability(accountId).stream()
                 .map(this::toDto)
                 .toList();
     }
 
     public List<TimeSlotDto> getFriendsSlots(String accountId) {
-        return availabilityDao.getFriendsAvailability(accountId).stream()
+        return implAvailabilityRepository.getFriendsAvailability(accountId).stream()
                 .map(this::toDto)
                 .toList();
     }
 
     public CalendarCodes deleteSlot(int slotId, String accountId) {
-        boolean deleted = availabilityDao.deleteAvailability(slotId, accountId);
+        boolean deleted = implAvailabilityRepository.deleteAvailability(slotId, accountId);
         return deleted ? CalendarCodes.SUCCESS : CalendarCodes.SLOT_NOT_FOUND;
     }
 

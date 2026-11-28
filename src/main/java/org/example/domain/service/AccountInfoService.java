@@ -1,6 +1,6 @@
-package org.example.domain;
+package org.example.domain.service;
 
-import org.example.dao.AccountDao;
+import org.example.data.persistence.ImplAccountRepository;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.SteamProfileDto;
 import org.example.domain.models.SteamSearchResult;
@@ -10,11 +10,11 @@ import java.util.List;
 
 public class AccountInfoService {
 
-    private final AccountDao accountDao;
+    private final ImplAccountRepository implAccountRepository;
     private final SteamApiClient steamApiClient;
 
-    public AccountInfoService(AccountDao accountDao, SteamApiClient steamApiClient) {
-        this.accountDao = accountDao;
+    public AccountInfoService(ImplAccountRepository implAccountRepository, SteamApiClient steamApiClient) {
+        this.implAccountRepository = implAccountRepository;
         this.steamApiClient = steamApiClient;
     }
 

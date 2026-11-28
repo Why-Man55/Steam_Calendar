@@ -1,7 +1,7 @@
-package org.example.domain;
+package org.example.domain.service;
 
-import org.example.dao.AccountDao;
-import org.example.dao.models.AccountModel;
+import org.example.data.persistence.ImplAccountRepository;
+import org.example.domain.models.AccountModel;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.RegisterCodes;
 import org.example.domain.models.SteamProfileDto;
@@ -10,11 +10,11 @@ import org.example.domain.utils.SteamUtils;
 public class AuthService {
     private static final int MIN_PASSWORD_LENGTH = 8;
 
-    private final AccountDao accountDao;
+    private final ImplAccountRepository implAccountRepository;
     private final SteamApiClient steamApiClient;
 
-    public AuthService(AccountDao accountDao, SteamApiClient steamApiClient) {
-        this.accountDao = accountDao;
+    public AuthService(ImplAccountRepository implAccountRepository, SteamApiClient steamApiClient) {
+        this.implAccountRepository = implAccountRepository;
         this.steamApiClient = steamApiClient;
     }
 
@@ -23,7 +23,7 @@ public class AuthService {
             return RegisterCodes.WEAK_PASSWORD;
         }
 
-        if (accountDao.isExists(id)) {
+        if (implAccountRepository.isExists(id)) {
             return RegisterCodes.EXISTS;
         }
 
@@ -37,17 +37,17 @@ public class AuthService {
                 : username.trim();
 
         String hash = SteamUtils.makeHash(password);
-        boolean saved = accountDao.saveAccount(new AccountModel(id, finalUsername, hash)) == 1;
+        boolean saved = implAccountRepository.saveAccount(new AccountModel(id, finalUsername, hash)) == 1;
 
         return saved ? RegisterCodes.SUCCESS : RegisterCodes.SERVER_ERROR;
     }
 
     public boolean checkLogin(String id, String password) {
-        if (id == null || password == null || !accountDao.isExists(id)) {
+        if (id == null || password == null || !implAccountRepository.isExists(id)) {
             return false;
         }
         String hash = SteamUtils.makeHash(password);
-        String checkHash = accountDao.getHash(id);
+        String checkHash = implAccountRepository.getHash(id);
         return checkHash != null && checkHash.equals(hash);
     }
 }

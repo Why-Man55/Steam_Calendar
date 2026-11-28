@@ -1,10 +1,10 @@
-package org.example.view;
+package org.example.view.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.domain.CalendarService;
+import org.example.domain.service.CalendarService;
 import org.example.domain.models.CalendarCodes;
 import org.example.domain.models.TimeSlotDto;
 
@@ -21,8 +21,6 @@ public class CalendarServlet extends HttpServlet {
     }
 
     @Override
-
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = (String) req.getSession().getAttribute("userId");
 
@@ -32,13 +30,12 @@ public class CalendarServlet extends HttpServlet {
         req.setAttribute("mySlots", mySlots);
         req.setAttribute("friendSlots", friendSlots);
 
-        // Если после POST-редиректа передан код ошибки — переводим его в сообщение
         String errorCode = req.getParameter("error");
         if (errorCode != null) {
             req.setAttribute("errorMessage", mapErrorCode(errorCode));
         }
 
-        req.getRequestDispatcher("/WEB-INF/views/calendar.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/celendar.jsp").forward(req, resp);
     }
 
     @Override
@@ -83,7 +80,7 @@ public class CalendarServlet extends HttpServlet {
 
     private String mapErrorCode(String code) {
         return switch (code) {
-            case "INVALID_TIME_RANGE" -> "Время окончания должно быть позже начала и не в прошлом.";
+            case "INVALID_TIME_RANGE" -> "Время окончания должно быть позже начала";
             case "PARSE_ERROR" -> "Некорректный формат даты или времени.";
             case "SLOT_NOT_FOUND" -> "Слот не найден или уже удален.";
             default -> "Произошла ошибка при сохранении расписания.";

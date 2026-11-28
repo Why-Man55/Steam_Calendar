@@ -1,4 +1,4 @@
-package org.example.dao.models;
+package org.example.domain.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

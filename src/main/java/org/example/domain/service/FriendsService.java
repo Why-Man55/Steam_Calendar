@@ -1,7 +1,7 @@
-package org.example.domain;
+package org.example.domain.service;
 
-import org.example.dao.AccountDao;
-import org.example.dao.FriendshipDao;
+import org.example.data.persistence.ImplAccountRepository;
+import org.example.data.persistence.ImplFriendshipRepository;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.FriendsCodes;
 import org.example.domain.models.RegisteredFriendDto;
@@ -14,13 +14,13 @@ import java.util.Set;
 public class FriendsService {
 
     private final SteamApiClient steamApiClient;
-    private final AccountDao accountDao;
-    private final FriendshipDao friendshipDao;
+    private final ImplAccountRepository implAccountRepository;
+    private final ImplFriendshipRepository implFriendshipRepository;
 
-    public FriendsService(SteamApiClient steamApiClient, AccountDao accountDao, FriendshipDao friendshipDao) {
+    public FriendsService(SteamApiClient steamApiClient, ImplAccountRepository implAccountRepository, ImplFriendshipRepository implFriendshipRepository) {
         this.steamApiClient = steamApiClient;
-        this.accountDao = accountDao;
-        this.friendshipDao = friendshipDao;
+        this.implAccountRepository = implAccountRepository;
+        this.implFriendshipRepository = implFriendshipRepository;
     }
 
     public List<RegisteredFriendDto> getAvailableSteamFriends(String userSteamId) {
@@ -30,14 +30,14 @@ public class FriendsService {
         }
 
         List<String> registeredIds = steamFriendIds.stream()
-                .filter(accountDao::isExists)
+                .filter(implAccountRepository::isExists)
                 .toList();
 
         if (registeredIds.isEmpty()) {
             return List.of();
         }
 
-        Set<String> alreadySaved = new HashSet<>(friendshipDao.getFriendIds(userSteamId));
+        Set<String> alreadySaved = new HashSet<>(implFriendshipRepository.getFriendIds(userSteamId));
         List<SteamProfileDto> profiles = steamApiClient.fetchPlayerSummaries(registeredIds);
 
         return profiles.stream()
@@ -57,14 +57,14 @@ public class FriendsService {
 
         List<String> validIds = selectedFriendIds.stream()
                 .filter(id -> !id.equals(userSteamId))
-                .filter(accountDao::isExists)
+                .filter(implAccountRepository::isExists)
                 .toList();
 
         if (validIds.isEmpty()) {
             return FriendsCodes.EMPTY_SELECTION;
         }
 
-        friendshipDao.saveFriends(userSteamId, validIds);
+        implFriendshipRepository.saveFriends(userSteamId, validIds);
         return FriendsCodes.SUCCESS;
     }
 }

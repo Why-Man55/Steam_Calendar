@@ -1,12 +1,13 @@
-package org.example.dao;
+package org.example.data.persistence;
 
-import org.example.dao.models.AccountModel;
+import org.example.DatabaseManager;
+import org.example.domain.models.AccountModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AccountDao {
+public class ImplAccountRepository {
     public int saveAccount(AccountModel model){
         String sql = "Insert into account (id, username, password_hash) values (?, ?, ?)";
 
