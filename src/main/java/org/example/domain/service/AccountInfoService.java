@@ -4,16 +4,18 @@ import org.example.data.persistence.ImplAccountRepository;
 import org.example.data.SteamApiClient;
 import org.example.domain.models.SteamProfileDto;
 import org.example.domain.models.SteamSearchResult;
+import org.example.domain.repository.AccountRepository;
+import org.example.domain.repository.SteamGateway;
 import org.example.domain.utils.SteamUtils;
 
 import java.util.List;
 
 public class AccountInfoService {
 
-    private final ImplAccountRepository implAccountRepository;
-    private final SteamApiClient steamApiClient;
+    private final AccountRepository implAccountRepository;
+    private final SteamGateway steamApiClient;
 
-    public AccountInfoService(ImplAccountRepository implAccountRepository, SteamApiClient steamApiClient) {
+    public AccountInfoService(AccountRepository implAccountRepository, SteamGateway steamApiClient) {
         this.implAccountRepository = implAccountRepository;
         this.steamApiClient = steamApiClient;
     }

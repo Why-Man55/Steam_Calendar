@@ -1,11 +1,11 @@
 package org.example.domain.service;
 
-import org.example.data.persistence.ImplAccountRepository;
-import org.example.data.persistence.ImplFriendshipRepository;
-import org.example.data.SteamApiClient;
 import org.example.domain.models.FriendsCodes;
 import org.example.domain.models.RegisteredFriendDto;
 import org.example.domain.models.SteamProfileDto;
+import org.example.domain.repository.AccountRepository;
+import org.example.domain.repository.FriendshipRepository;
+import org.example.domain.repository.SteamGateway;
 
 import java.util.HashSet;
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.Set;
 
 public class FriendsService {
 
-    private final SteamApiClient steamApiClient;
-    private final ImplAccountRepository implAccountRepository;
-    private final ImplFriendshipRepository implFriendshipRepository;
+    private final SteamGateway steamApiClient;
+    private final AccountRepository implAccountRepository;
+    private final FriendshipRepository implFriendshipRepository;
 
-    public FriendsService(SteamApiClient steamApiClient, ImplAccountRepository implAccountRepository, ImplFriendshipRepository implFriendshipRepository) {
+    public FriendsService(SteamGateway steamApiClient, AccountRepository implAccountRepository, FriendshipRepository implFriendshipRepository) {
         this.steamApiClient = steamApiClient;
         this.implAccountRepository = implAccountRepository;
         this.implFriendshipRepository = implFriendshipRepository;

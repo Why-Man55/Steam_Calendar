@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.example.domain.models.SteamProfileDto;
+import org.example.domain.repository.SteamGateway;
 
 import java.net.ProxySelector;
 import java.net.URI;
@@ -17,7 +18,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SteamApiClient {
+public class SteamApiClient implements SteamGateway {
 
     private static final String BASE_URL = "https://api.steampowered.com";
     private final String apiKey;
@@ -36,10 +37,12 @@ public class SteamApiClient {
                 .build();
     }
 
+    @Override
     public boolean hasApiKey() {
         return apiKey != null && !apiKey.isBlank();
     }
 
+    @Override
     public String resolveVanityUrl(String vanityUrl) {
         String encoded = URLEncoder.encode(vanityUrl, StandardCharsets.UTF_8);
         String url = String.format("%s/ISteamUser/ResolveVanityURL/v1/?key=%s&vanityurl=%s",
@@ -61,6 +64,7 @@ public class SteamApiClient {
         return null;
     }
 
+    @Override
     public SteamProfileDto fetchPlayerSummary(String steamId64, List<String> friendIds) {
         String url = String.format("%s/ISteamUser/GetPlayerSummaries/v2/?key=%s&steamids=%s",
                 BASE_URL, apiKey, steamId64);
@@ -111,6 +115,7 @@ public class SteamApiClient {
                 .build();
     }
 
+    @Override
     public List<String> fetchFriendIds(String steamId64) {
         List<String> friendIds = new ArrayList<>();
         String url = String.format("%s/ISteamUser/GetFriendList/v1/?key=%s&steamid=%s&relationship=friend",
@@ -148,9 +153,6 @@ public class SteamApiClient {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("[SteamApiClient] URL: " + url.replace(apiKey, "HIDDEN_KEY"));
-            System.out.println("[SteamApiClient] Status: " + response.statusCode());
-            System.out.println("[SteamApiClient] Body: " + response.body());
 
             if (response.statusCode() == 200) {
                 return response.body();
@@ -179,7 +181,6 @@ public class SteamApiClient {
             return null;
         }
         String trimmed = body.trim();
-        // Если Steam вернул HTML (например, <html><head><title>Unauthorized</title>...), не падаем с MalformedJsonException
         if (!trimmed.startsWith("{")) {
             return null;
         }
@@ -191,6 +192,7 @@ public class SteamApiClient {
         }
     }
 
+    @Override
     public List<SteamProfileDto> fetchPlayerSummaries(List<String> steamIds) {
         if (steamIds == null || steamIds.isEmpty()) {
             return List.of();

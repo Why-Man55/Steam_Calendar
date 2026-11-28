@@ -1,6 +1,7 @@
 package org.example.data.persistence;
 
 import org.example.DatabaseManager;
+import org.example.domain.repository.FriendshipRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,13 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplFriendshipRepository {
+public class ImplFriendshipRepository implements FriendshipRepository {
+    @Override
     public void saveFriends(String accountId, List<String> registeredFriendIds) {
         if (registeredFriendIds == null || registeredFriendIds.isEmpty()) {
             return;
         }
 
-        String sql = "INSERT INTO friendships (account_id, friend_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        String sql = "insert into friendships (account_id, friend_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
 
         try (Connection con = DatabaseManager.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -33,8 +35,9 @@ public class ImplFriendshipRepository {
         }
     }
 
+    @Override
     public List<String> getFriendIds(String accountId) {
-        String sql = "SELECT friend_id FROM friendships WHERE account_id = ?";
+        String sql = "select friend_id from friendships WHERE account_id = ?";
         List<String> friends = new ArrayList<>();
 
         try (Connection con = DatabaseManager.getConnection();

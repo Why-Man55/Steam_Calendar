@@ -1,17 +1,20 @@
 package org.example.domain.service;
 
-import org.example.data.persistence.ImplAvailabilityRepository;
-import org.example.domain.models.TimeSlot;
 import org.example.domain.models.CalendarCodes;
+import org.example.domain.models.TimeSlot;
 import org.example.domain.models.TimeSlotDto;
+import org.example.domain.repository.AvailabilityRepository;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public class CalendarService {
-    private final ImplAvailabilityRepository implAvailabilityRepository;
+    private final AvailabilityRepository implAvailabilityRepository;
 
-    public CalendarService(ImplAvailabilityRepository implAvailabilityRepository) {
+    public CalendarService(AvailabilityRepository implAvailabilityRepository) {
         this.implAvailabilityRepository = implAvailabilityRepository;
     }
 

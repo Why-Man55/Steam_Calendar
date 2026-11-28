@@ -2,12 +2,15 @@ package org.example.data.persistence;
 
 import org.example.DatabaseManager;
 import org.example.domain.models.AccountModel;
+import org.example.domain.repository.AccountRepository;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImplAccountRepository {
+public class ImplAccountRepository implements AccountRepository {
+    @Override
     public int saveAccount(AccountModel model){
         String sql = "Insert into account (id, username, password_hash) values (?, ?, ?)";
 
@@ -24,6 +27,7 @@ public class ImplAccountRepository {
         }
     }
 
+    @Override
     public boolean isExists(String id) {
         String sql = "Select id from account where id = (?)";
 
@@ -39,6 +43,7 @@ public class ImplAccountRepository {
         }
     }
 
+    @Override
     public String getHash(String id) {
         String sql = "Select password_hash from account where id = (?)";
 

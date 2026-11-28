@@ -2,6 +2,7 @@ package org.example.data.persistence;
 
 import org.example.DatabaseManager;
 import org.example.domain.models.TimeSlot;
+import org.example.domain.repository.AvailabilityRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplAvailabilityRepository {
+public class ImplAvailabilityRepository implements AvailabilityRepository {
+    @Override
     public boolean addAvailability(String accountId, OffsetDateTime start, OffsetDateTime end) {
         String sql = "INSERT INTO account_availability (account_id, available_time) VALUES (?, tstzrange(?, ?, '[)'))";
 
@@ -28,6 +30,7 @@ public class ImplAvailabilityRepository {
         }
     }
 
+    @Override
     public List<TimeSlot> getUserAvailability(String accountId) {
         String sql = """
                 SELECT id, account_id, lower(available_time) AS start_time, upper(available_time) AS end_time
@@ -39,6 +42,7 @@ public class ImplAvailabilityRepository {
         return fetchSlotsByParam(sql, accountId);
     }
 
+    @Override
     public List<TimeSlot> getFriendsAvailability(String accountId) {
         String sql = """
                 SELECT a.id, a.account_id, lower(a.available_time) AS start_time, upper(a.available_time) AS end_time
@@ -51,6 +55,7 @@ public class ImplAvailabilityRepository {
         return fetchSlotsByParam(sql, accountId);
     }
 
+    @Override
     public boolean deleteAvailability(int slotId, String accountId) {
         String sql = "DELETE FROM account_availability WHERE id = ? AND account_id = ?";
 
